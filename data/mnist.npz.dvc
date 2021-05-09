@@ -1,0 +1,4 @@
+outs:
+- md5: 71b933128ed07a45acf8d6b853c486a7
+  size: 424
+  path: mnist.npz
