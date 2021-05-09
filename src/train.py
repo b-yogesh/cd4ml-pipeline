@@ -1,13 +1,43 @@
 import tensorflow as tf
 from model.cnn import ConvNet
+from tensorflow.python.keras.utils.data_utils import get_file
+import numpy as np
+import mlflow
+import mlflow.tensorflow
+import dvc.api
 
 EPOCHS = 2
 BATCH_SIZE = 32
 
-mnist = tf.keras.datasets.mnist
-print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-# get mnist dataset
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# code from tensorflow - just to save mnist model to use dvc
+# origin_folder = 'https://storage.googleapis.com/tensorflow/tf-keras-datasets/'
+# path='mnist.npz'
+# path = get_file(
+#         path,
+#         origin=origin_folder + 'mnist.npz',
+#         file_hash=
+#         '731c5ac602752760c8e48fbffcf8c3b850d9dc2a2aedcf2cc48468fc17b673d1')
+
+## using dvc to access data
+path = 'data/mnist.npz'
+repo= 'D:/cd4ml/cd4ml-pipeline'
+version='v1'
+
+data_url = dvc.api.get_url(
+    path=path,
+    repo=repo,
+    rev=version
+)
+
+with np.load(data_url, allow_pickle=True) as g:
+    a = g['arr_0'].item()
+    with np.load(a) as f:
+        x_train, y_train = f['x_train'], f['y_train']
+        x_test, y_test = f['x_test'], f['y_test']
+# np.savez('data/mnist.npz', path)
+
+## mlflow init
+mlflow.set_experiment('cnn_model_exp')
 
 # normalize
 x_train, x_test = x_train / 255.0, x_test / 255.0
@@ -40,6 +70,10 @@ train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy
 
 test_loss = tf.keras.metrics.Mean(name='test_loss')
 test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
+
+mlflow.log_param('data_url', data_url)
+mlflow.log_metric('test_loss', float(test_loss.result()))
+mlflow.log_metric('test_accuracy', float(test_accuracy.result()))
 
 def train_step(images, labels):
     with tf.GradientTape() as tape:

@@ -1,0 +1,4 @@
+artifact_location: file:///D:/cd4ml/cd4ml-pipeline/mlruns/1
+experiment_id: '1'
+lifecycle_stage: active
+name: cnn_model_exp

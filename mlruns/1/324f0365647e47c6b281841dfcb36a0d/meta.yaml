@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/cd4ml/cd4ml-pipeline/mlruns/1/324f0365647e47c6b281841dfcb36a0d/artifacts
+end_time: 1620602795216
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: 324f0365647e47c6b281841dfcb36a0d
+run_uuid: 324f0365647e47c6b281841dfcb36a0d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1620602784648
+status: 3
+tags: []
+user_id: yoges
