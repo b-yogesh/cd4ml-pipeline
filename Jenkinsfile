@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent none
     options {
        // add timestamps to output
        timestamps()
@@ -19,9 +19,7 @@ pipeline {
                 }
             }
             steps {
-                withEnv(["HOME=${env.WORKSPACE}"]){
                     sh 'pip install -r requirements.txt'
-                }
             }
         }
         // stage('Run tests') {
@@ -31,11 +29,9 @@ pipeline {
         // }
         stage('Run ML pipeline') {
             agent any
-            
+
             steps {
-                withEnv(["HOME=${env.WORKSPACE}"]){
                     sh 'python3 test.py'
-                }
             }
        }
     }
