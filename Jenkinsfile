@@ -10,10 +10,17 @@ pipeline {
     environment { 
         MLFLOW_TRACKING_URL = 'http://mlflow:5000'
     }
+    agent {
+                docker {
+                    image 'python:3-alpine'
+                }
+            }
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                withEnv(["HOME=${env.WORKSPACE}"]){
+                    sh 'pip install -r requirements.txt'
+                }
             }
         }
         // stage('Run tests') {
@@ -23,7 +30,9 @@ pipeline {
         // }
         stage('Run ML pipeline') {
             steps {
-                sh 'python3 test.py'
+                withEnv(["HOME=${env.WORKSPACE}"]){
+                    sh 'python3 test.py'
+                }
             }
        }
     }
