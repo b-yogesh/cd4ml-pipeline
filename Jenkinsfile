@@ -15,7 +15,7 @@ pipeline {
         stage('Install dependencies') {
         agent {
                 docker {
-                    image 'python:3-alpine'
+                    image 'python:3.9.5-windowsservercore-ltsc2016'
                 }
             }
             steps {
