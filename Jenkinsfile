@@ -1,12 +1,11 @@
 pipeline {
-    agent any
-    triggers {
-        // Poll SCM every minute for new changes
-        pollSCM('* * * * *')
-    }
+  agent any
     options {
        // add timestamps to output
        timestamps()
+    }
+     triggers {
+    pollSCM('* * * * *')
     }
     environment { 
         MLFLOW_TRACKING_URL = 'http://mlflow:5000'
@@ -28,4 +27,6 @@ pipeline {
             }
        }
     }
-}
+
+  }
+ 
