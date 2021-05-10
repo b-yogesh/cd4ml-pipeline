@@ -72,8 +72,7 @@ test_loss = tf.keras.metrics.Mean(name='test_loss')
 test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
 mlflow.log_param('data_url', data_url)
-mlflow.log_metric('test_loss', float(test_loss.result()))
-mlflow.log_metric('test_accuracy', float(test_accuracy.result()))
+
 
 def train_step(images, labels):
     with tf.GradientTape() as tape:
@@ -106,6 +105,8 @@ def train():
         for test_images, test_labels in test_ds:
             test_step(test_images, test_labels)
         model.save("cnn_model")
+        mlflow.log_metric('test_loss', float(test_loss.result()))
+        mlflow.log_metric('test_accuracy', float(test_accuracy.result()))
         print(
         f'Epoch {epoch + 1}, '
         f'Loss: {train_loss.result()}, '
@@ -117,5 +118,3 @@ def train():
 
 if __name__ == '__main__':
     train()
-
-# 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
