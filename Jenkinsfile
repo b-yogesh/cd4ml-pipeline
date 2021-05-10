@@ -10,12 +10,13 @@ pipeline {
     environment { 
         MLFLOW_TRACKING_URL = 'http://mlflow:5000'
     }
-    agent {
+    
+    stages {
+        agent {
                 docker {
                     image 'python:3-alpine'
                 }
             }
-    stages {
         stage('Install dependencies') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]){
