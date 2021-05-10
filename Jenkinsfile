@@ -12,12 +12,12 @@ pipeline {
     }
     
     stages {
+        stage('Install dependencies') {
         agent {
                 docker {
                     image 'python:3-alpine'
                 }
             }
-        stage('Install dependencies') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     sh 'pip install -r requirements.txt'
@@ -30,6 +30,8 @@ pipeline {
         //     }
         // }
         stage('Run ML pipeline') {
+            agent any
+            
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     sh 'python3 test.py'
